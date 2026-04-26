@@ -76,13 +76,14 @@ function clear_overlay(): void {
 function open_code_block_lightbox(
     language: string | undefined,
     code: string,
+    highlighted_code_html: string,
     code_element: HTMLElement | undefined,
 ): void {
     const title = language
         ? $t({defaultMessage: "Code Block ({language})"}, {language})
         : $t({defaultMessage: "Code Block"});
     $("#code_block_lightbox_overlay .code-block-lightbox-title").text(title);
-    $("#code_block_lightbox_overlay code").text(code);
+    $("#code_block_lightbox_overlay code").html(highlighted_code_html);
     $("#code_block_lightbox_overlay .code-block-lightbox-editor").val(code);
     active_code = code;
     source_code_element = code_element;
@@ -173,7 +174,8 @@ export function initialize(): void {
             const language = $codehilite_div.attr("data-code-language");
             const $code_element = $codehilite_div.find("code").first();
             const code = $code_element.text();
-            open_code_block_lightbox(language, code, $code_element.get(0));
+            const highlighted_code_html = $code_element.html() ?? "";
+            open_code_block_lightbox(language, code, highlighted_code_html, $code_element.get(0));
         },
     );
 
